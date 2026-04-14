@@ -1,0 +1,279 @@
+/* ───────── WELCOME ───────── */
+.welcome {
+  background: linear-gradient(135deg,#0f1f3d,#1a2a4a);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 26px;
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.welcome h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.welcome p {
+  color: rgba(241,245,249,.6);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.emoji {
+  font-size: 38px;
+}
+
+/* ───────── BOARD MINI ───────── */
+.board-mini {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.col-mini {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.col-head {
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+.col-body {
+  padding: 10px;
+  min-height: 120px;
+}
+
+/* TASK MINI */
+.task-mini {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+
+  transition: all .2s;
+}
+
+.task-mini:hover {
+  background: rgba(59,130,246,.08);
+  border-color: var(--accent);
+}
+
+/* EMPTY TEXT */
+.empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 30px;
+}
+
+/* ───────── GRID 2 COL ───────── */
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* ───────── CARD ───────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  transition: all .2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0,0,0,.35);
+}
+
+.card-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* BODY FLEX */
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ───────── ADMIN WRAP (🔥 BARU) ───────── */
+.admin-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-wrap .card {
+  width: 60%;
+  min-width: 500px;
+}
+
+/* ───────── ACTIVITY LIST (🔥 BONUS) ───────── */
+.activity-list {
+  padding: 16px;
+}
+
+.activity-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 0;
+}
+
+/* ───────── PROGRESS ───────── */
+.prog-modern {
+  padding: 18px 20px;
+}
+
+.prog-row {
+  margin-bottom: 14px;
+}
+
+.prog-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+.prog-bar {
+  height: 6px;
+  background: rgba(255,255,255,.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width .6s ease;
+}
+
+.prog-fill.green {
+  background: linear-gradient(90deg,#22c55e,#4ade80);
+}
+
+.prog-fill.blue {
+  background: linear-gradient(90deg,#3b82f6,#60a5fa);
+}
+
+.prog-fill.gray {
+  background: rgba(255,255,255,.25);
+}
+
+.prog-center {
+  margin-top: auto;
+  text-align: center;
+  padding-top: 14px;
+}
+
+.big-pct {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--green);
+}
+
+.big-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ───────── DEADLINE ───────── */
+.dl-modern {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dl-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+  padding: 12px 14px;
+
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  transition: all .2s;
+}
+
+.dl-row:hover {
+  background: rgba(59,130,246,.08);
+  border-color: var(--accent);
+}
+
+.task-title {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.task-user {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.task-deadline {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent2);
+}
+
+.dl-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* ───────── LOADING ───────── */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: var(--muted);
+}
+
+/* ───────── DATE ───────── */
+.date-text {
+  font-size: 12px;
+  color: var(--muted);
+}

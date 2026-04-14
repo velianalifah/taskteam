@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap');
+
+/* RESET */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ROOT */
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1f2d47;
+
+  --accent: #3b82f6;
+  --accent2: #60a5fa;
+
+  --green: #22c55e;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --purple: #a855f7;
+
+  --text: #f1f5f9;
+  --text2: #cbd5e1;
+  --muted: #64748b;
+
+  --sidebar: 240px;
+}
+
+/* GLOBAL */
+html,
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100%;
+}
+
+/* ───────── LAYOUT ───────── */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ───────── SIDEBAR ───────── */
+.sidebar {
+  width: var(--sidebar);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.sidebar-logo {
+  padding: 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-icon {
+  width: 34px;
+  height: 34px;
+  background: var(--accent);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 14px 10px;
+}
+
+.nav-item {
+  display: flex;
+  gap: 9px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.nav-item.active {
+  background: rgba(59,130,246,.12);
+  color: var(--accent2);
+}
+
+/* ───────── MAIN ───────── */
+.main {
+  margin-left: var(--sidebar);
+  flex: 1;
+}
+
+/* ───────── TABLE ───────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 10px;
+}
+
+tbody td {
+  padding: 10px;
+}
+
+/* ───────── BADGE ───────── */
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* STATUS */
+.b-todo {
+  background: rgba(100,116,139,.15);
+  color: var(--muted);
+}
+.b-progress {
+  background: rgba(59,130,246,.15);
+  color: var(--accent2);
+}
+.b-done {
+  background: rgba(34,197,94,.15);
+  color: var(--green);
+}
+
+/* PRIORITY */
+.b-high {
+  background: rgba(239,68,68,.15);
+  color: var(--red);
+}
+.b-medium {
+  background: rgba(245,158,11,.15);
+  color: var(--yellow);
+}
+.b-low {
+  background: rgba(34,197,94,.15);
+  color: var(--green);
+}
+
+/* ROLE */
+.b-admin {
+  background: rgba(239,68,68,.15);
+  color: var(--red);
+}
+
+.b-manager {
+  background: rgba(168,85,247,.15);
+  color: var(--purple);
+}
+
+/* 🔥 INI YANG PENTING */
+.b-member {
+  background: rgba(59,130,246,.15);
+  color: var(--accent2);
+}
+
+/* ───────── BUTTON ───────── */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+/* ───────── FORM ───────── */
+.fg input,
+.fg select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 9px;
+  border-radius: 8px;
+}
+
+/* ───────── MISC ───────── */
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--muted);
+}
