@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const API = {
   async req(method, path, body) {
@@ -26,6 +26,10 @@ const Auth = {
   get: () => JSON.parse(localStorage.getItem("tt_user") || "null"),
   set: (u) => localStorage.setItem("tt_user", JSON.stringify(u)),
   clear: () => localStorage.removeItem("tt_user"),
+  logout: () => {
+    localStorage.removeItem("tt_user");
+    window.location.href = "/";
+  },
 };
 
 export { API, Auth };
