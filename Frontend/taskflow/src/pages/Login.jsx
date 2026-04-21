@@ -1,55 +1,58 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { API, Auth } from "../app";
 import "./Login.css";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverStatus, setServerStatus] = useState("loading");
 
-  const BASE_URL = "http://localhost:3000";
-
-  // 🔥 CHECK SERVER
   useEffect(() => {
-    fetch(BASE_URL + "/")
-      .then(res => {
-        if (res.ok) setServerStatus("ok");
-        else throw new Error();
-      })
-      .catch(() => setServerStatus("err"));
+    const currentUser = Auth.get();
+    if (currentUser) {
+      navigate("/dashboard", { replace: true });
+      return;
+    }
+
+    checkServer();
   }, []);
 
-  // 🔐 LOGIN
-  const doLogin = async () => {
+  async function checkServer() {
+    const res = await API.get("/");
+    setServerStatus(res.ok ? "ok" : "err");
+  }
+
+  async function doLogin(e) {
+    e.preventDefault();
+
     if (!username || !password) {
       setError("Username dan password wajib diisi!");
       return;
     }
 
     setError("");
+    setIsSubmitting(true);
 
     try {
-      const res = await fetch(BASE_URL + "/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, password })
-      });
+      const res = await API.post("/login", { username, password });
+      const data = res.data;
 
-      const data = await res.json();
-
-      if (res.ok && data.user) {
-        localStorage.setItem("tt_user", JSON.stringify(data.user));
-        alert("Login berhasil 👋");
-        window.location.href = "/dashboard";
+      if (res.ok && data?.user) {
+        Auth.set(data.user);
+        navigate("/dashboard", { replace: true });
       } else {
-        setError(data.message || "Login gagal!");
+        setError(data?.message || "Login gagal!");
       }
     } catch {
       setError("Tidak bisa connect ke server");
+    } finally {
+      setIsSubmitting(false);
     }
-  };
+  }
 
   return (
     <div>
@@ -90,39 +93,48 @@ export default function Login() {
           <h2>Login</h2>
           <p className="sub">Silakan login menggunakan akun yang diberikan admin</p>
 
-          {/* SERVER STATUS */}
           <div className="svr">
             {serverStatus === "loading" && <span>Memeriksa server...</span>}
             {serverStatus === "ok" && <span style={{ color: "lime" }}>Server terhubung ✓</span>}
             {serverStatus === "err" && <span style={{ color: "red" }}>Server tidak terdeteksi</span>}
           </div>
 
-          {/* ERROR */}
           {error && <div className="err show">{error}</div>}
 
-          <div className="fg">
-            <label>Username</label>
-            <input
-              type="text"
-              placeholder="Masukkan username..."
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-            />
-          </div>
+          <form onSubmit={doLogin}>
+            <div className="fg">
+              <label>Username</label>
+              <input
+                type="text"
+                placeholder="Masukkan username..."
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                autoComplete="username"
+              />
+            </div>
 
-          <div className="fg">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Masukkan password..."
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </div>
+            <div className="fg">
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Masukkan password..."
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+            </div>
 
-          <button className="btn" onClick={doLogin}>
-            Masuk →
-          </button>
+            <button className="btn" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Memproses..." : "Masuk ->"}
+            </button>
+          </form>
+
+          <div className="hint">
+            <div>Akun seed DB:</div>
+            <div>admin / admin123</div>
+            <div>manager1 / manager123</div>
+            <div>pegawai1 / pegawai123</div>
+          </div>
         </div>
 
       </div>
