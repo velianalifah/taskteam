@@ -1,6 +1,7 @@
 const express = require("express");
-const mysql   = require("mysql2");
 const cors    = require("cors");
+require("dotenv").config();
+const db = require("./config/db");
 
 const app = express();
 
@@ -8,17 +9,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ── DB ─────────────────────────────────
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "taskteam"
-});
-
-db.connect(err => {
+db.getConnection((err, connection) => {
     if (err) return console.error("DB gagal:", err.message);
     console.log("DB connected");
+    connection.release();
 });
 
 // ── ROOT ───────────────────────────────
@@ -190,4 +184,5 @@ app.delete("/tasks/:id", (req, res) => {
 
 
 // ── START SERVER ───────────────────────
-app.listen(3000, () => console.log("Server http://localhost:3000"));
+const port = Number(process.env.PORT || 3000);
+app.listen(port, () => console.log(`Server http://localhost:${port}`));
