@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import "./Style.css";
 import "./Dashboard.css";
 
-import { API, Auth } from "../app"; // sesuaikan path kalau beda
-import Sidebar from "../components/Sidebar"; // nanti kamu bikin
+import { API, Auth } from "../app";
+import Sidebar from "../components/Sidebar";
 
 export default function Dashboard() {
   const user = Auth.get();
@@ -11,7 +11,6 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // tanggal
   const today = new Date().toLocaleDateString("id-ID", {
     weekday: "long",
     day: "numeric",
@@ -38,7 +37,6 @@ export default function Dashboard() {
     setLoading(false);
   }
 
-  // 🔥 FILTER TASK
   const mine =
     user.role === "pegawai"
       ? tasks.filter(t => t.assignee_id == user.id)
@@ -67,16 +65,13 @@ export default function Dashboard() {
 
         <div className="page">
 
-          {/* WELCOME */}
           <div className="welcome">
             <div>
               <h2>Selamat datang, {user.username}! 👋</h2>
-              <p>Ringkasan sistem hari ini</p>
             </div>
             <div className="emoji">🚀</div>
           </div>
 
-          {/* BOARD */}
           {showBoard && (
             <div className="board-mini">
               {col("To Do", todoList)}
@@ -85,10 +80,8 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* ADMIN LOG */}
           {showLog && (
             <div className="admin-grid">
-
               <div className="card">
                 <div className="card-head">📋 Aktivitas Terbaru</div>
 
@@ -98,9 +91,6 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-
-              <div></div>
-
             </div>
           )}
 
@@ -110,9 +100,7 @@ export default function Dashboard() {
   );
 }
 
-/* 🔥 COMPONENT KECIL */
-
-// BOARD COLUMN
+/* COMPONENT */
 function col(title, data) {
   return (
     <div className="col-mini">
@@ -131,12 +119,10 @@ function col(title, data) {
   );
 }
 
-// MINI TASK
 function TaskMini({ t }) {
   return <div className="task-mini">{t.title}</div>;
 }
 
-// ACTIVITY LOG
 function buildLog(tasks) {
   if (tasks.length === 0) {
     return <div className="activity-empty">Belum ada aktivitas</div>;

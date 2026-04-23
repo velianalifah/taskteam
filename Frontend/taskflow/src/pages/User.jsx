@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import "./User.css";
+import Sidebar from "../components/Sidebar";
 
 export default function User() {
   const BASE_URL = "http://localhost:3000";
 
   const user = JSON.parse(localStorage.getItem("tt_user"));
 
-  // ❌ pegawai ga boleh akses
+  if (!user) {
+    window.location.href = "/";
+    return null;
+  }
+
   if (user.role === "pegawai") {
     window.location.href = "/dashboard";
+    return null;
   }
 
   const [users, setUsers] = useState([]);
   const [tasks, setTasks] = useState([]);
-
   const [search, setSearch] = useState("");
 
   const [formOpen, setFormOpen] = useState(false);
@@ -28,7 +33,6 @@ export default function User() {
 
   const isAdmin = user.role === "admin";
 
-  // LOAD DATA
   useEffect(() => {
     loadAll();
   }, []);
@@ -43,7 +47,6 @@ export default function User() {
     setTasks(tr);
   };
 
-  // FILTER
   let list = users;
   if (search) {
     list = list.filter(u =>
@@ -51,7 +54,6 @@ export default function User() {
     );
   }
 
-  // SAVE
   const save = async () => {
     if (!form.username) return alert("Username wajib!");
     if (!editId && !form.password) return alert("Password wajib!");
@@ -75,7 +77,6 @@ export default function User() {
     loadAll();
   };
 
-  // DELETE
   const del = async (id) => {
     if (!confirm("Hapus user?")) return;
 
@@ -86,7 +87,6 @@ export default function User() {
     loadAll();
   };
 
-  // HITUNG TASK USER
   const getTaskInfo = (uid) => {
     const uTasks = tasks.filter(t => t.assignee_id == uid);
     const done = uTasks.filter(t => t.status === "done").length;
@@ -95,115 +95,171 @@ export default function User() {
   };
 
   return (
-    <div className="page">
+    <div className="app">
 
-      <h2>👥 Manajemen User</h2>
+      <Sidebar active="users" />
 
-      {/* SEARCH */}
-      <input
-        placeholder="🔍 Cari username..."
-        onChange={e => setSearch(e.target.value)}
-      />
+      <main className="main">
 
-      {/* BUTTON */}
-      {isAdmin && (
-        <button onClick={() => setFormOpen(true)}>
-          ＋ Tambah User
-        </button>
-      )}
+        {/* TOPBAR */}
+        <div className="topbar">
+          <span className="topbar-title">👥 Manajemen User</span>
+        </div>
 
-      {/* TABLE */}
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Username</th>
-            <th>Role</th>
-            <th>Divisi</th>
-            <th>Tugas</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
+        {/* PAGE */}
+        <div className="page">
 
-        <tbody>
-          {list.map((u, i) => (
-            <tr key={u.id}>
-              <td>{i + 1}</td>
-              <td>@{u.username}</td>
-              <td>{u.role}</td>
-              <td>{u.divisi || "-"}</td>
-              <td>{getTaskInfo(u.id)}</td>
+          {/* HEADER FLEX */}
+          <div className="page-head">
+            <h2>👥 Manajemen User</h2>
 
-              <td>
-                {isAdmin && (
-                  <>
-                    <button onClick={() => {
-                      setEditId(u.id);
-                      setForm({
-                        username: u.username,
-                        password: "",
-                        role: u.role,
-                        divisi: u.divisi || "IT"
-                      });
-                      setFormOpen(true);
-                    }}>
-                      ✏️
-                    </button>
+            {isAdmin && (
+              <button
+                className="btn-primary"
+                onClick={() => {
+                  setEditId(null);
+                  setForm({
+                    username: "",
+                    password: "",
+                    role: "pegawai",
+                    divisi: "IT"
+                  });
+                  setFormOpen(true);
+                }}
+              >
+                ＋ Tambah User
+              </button>
+            )}
+          </div>
 
-                    {u.id !== user.id && (
-                      <button onClick={() => del(u.id)}>🗑</button>
+          {/* SEARCH */}
+          <input
+            className="search"
+            placeholder="🔍 Cari username..."
+            onChange={e => setSearch(e.target.value)}
+          />
+
+          {/* TABLE */}
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Divisi</th>
+                <th>Tugas</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {list.map((u, i) => (
+                <tr key={u.id}>
+                  <td>{i + 1}</td>
+                  <td>@{u.username}</td>
+                  <td>{u.role}</td>
+                  <td>{u.divisi || "-"}</td>
+                  <td>{getTaskInfo(u.id)}</td>
+
+                  <td>
+                    {isAdmin && (
+                      <div className="actions">
+
+                        <button
+                          className="btn-sm"
+                          onClick={() => {
+                            setEditId(u.id);
+                            setForm({
+                              username: u.username,
+                              password: "",
+                              role: u.role,
+                              divisi: u.divisi || "IT"
+                            });
+                            setFormOpen(true);
+                          }}
+                        >
+                          ✏️
+                        </button>
+
+                        {u.id !== user.id && (
+                          <button
+                            className="btn-sm btn-del"
+                            onClick={() => del(u.id)}
+                          >
+                            🗑
+                          </button>
+                        )}
+
+                      </div>
                     )}
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* MODAL */}
-      {formOpen && (
-        <div className="modal">
-
-          <h3>{editId ? "Edit User" : "Tambah User"}</h3>
-
-          <input
-            placeholder="Username"
-            value={form.username}
-            onChange={e => setForm({ ...form, username: e.target.value })}
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={e => setForm({ ...form, password: e.target.value })}
-          />
-
-          <select
-            value={form.role}
-            onChange={e => setForm({ ...form, role: e.target.value })}
-          >
-            <option value="pegawai">Pegawai</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-          </select>
-
-          <select
-            value={form.divisi}
-            onChange={e => setForm({ ...form, divisi: e.target.value })}
-          >
-            <option value="IT">IT</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Keuangan">Keuangan</option>
-          </select>
-
-          <button onClick={save}>💾 Simpan</button>
-          <button onClick={() => setFormOpen(false)}>Batal</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
         </div>
-      )}
 
+        {/* MODAL */}
+        <div className={`overlay ${formOpen ? "open" : ""}`}>
+          <div className="modal">
+
+            <h3>{editId ? "Edit User" : "Tambah User"}</h3>
+
+            <div className="fg">
+              <label>Username</label>
+              <input
+                value={form.username}
+                onChange={e => setForm({ ...form, username: e.target.value })}
+              />
+            </div>
+
+            <div className="fg">
+              <label>Password</label>
+              <input
+                type="password"
+                value={form.password}
+                onChange={e => setForm({ ...form, password: e.target.value })}
+              />
+            </div>
+
+            <div className="fg">
+              <label>Role</label>
+              <select
+                value={form.role}
+                onChange={e => setForm({ ...form, role: e.target.value })}
+              >
+                <option value="pegawai">Pegawai</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <div className="fg">
+              <label>Divisi</label>
+              <select
+                value={form.divisi}
+                onChange={e => setForm({ ...form, divisi: e.target.value })}
+              >
+                <option value="IT">IT</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Keuangan">Keuangan</option>
+              </select>
+            </div>
+
+            <div className="modal-foot">
+              <button className="btn-primary" onClick={save}>
+                💾 Simpan
+              </button>
+              <button onClick={() => setFormOpen(false)}>
+                Batal
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
     </div>
   );
 }

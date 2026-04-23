@@ -1,63 +1,71 @@
+import { Link } from "react-router-dom";
 import { Auth } from "../app";
 
-function Sidebar({ active }) {
-  const u = Auth.get();
-  if (!u) return null;
-
-  const role = u.role || "pegawai";
-
-  const nav = [
-    { id:"dashboard", icon:"📊", label:"Dashboard", href:"/dashboard" },
-
-    ...(role !== "admin" ? [
-      { id:"tasks", icon:"✅", label:"Manajemen Tugas", href:"/tasks" }
-    ] : []),
-
-    ...(role !== "pegawai" ? [
-      { id:"users", icon:"👥", label:"Manajemen User", href:"/users" }
-    ] : []),
-
-    { id:"about", icon:"ℹ️", label:"About Us", href:"/about" },
-  ];
+export default function Sidebar({ active }) {
+  const user = Auth.get();
 
   return (
-    <div className="sidebar">
+    <aside className="sidebar">
+
+      {/* LOGO */}
       <div className="sidebar-logo">
         <div className="logo-icon">✦</div>
-        <span className="logo-text">TaskTeam</span>
+        <div className="logo-text">TaskTeam</div>
       </div>
 
-      <nav className="sidebar-nav">
-        <div className="nav-label">Menu</div>
+      {/* NAV */}
+      <div className="sidebar-nav">
 
-        {nav.map(n => (
-          <a
-            key={n.id}
-            className={`nav-item ${active === n.id ? "active" : ""}`}
-            href={n.href}
-          >
-            <span className="nav-icon">{n.icon}</span>
-            {n.label}
-          </a>
-        ))}
-      </nav>
+        {/* ❌ INI DIHAPUS:
+        <div className="nav-label">MENU</div>
+        */}
 
+        <Link
+          to="/dashboard"
+          className={`nav-item ${active === "dashboard" ? "active" : ""}`}
+        >
+          <span className="nav-icon">📊</span>
+          Dashboard
+        </Link>
+
+        <Link
+          to="/users"
+          className={`nav-item ${active === "users" ? "active" : ""}`}
+        >
+          <span className="nav-icon">👥</span>
+          Manajemen User
+        </Link>
+
+        <Link
+          to="/about"
+          className={`nav-item ${active === "about" ? "active" : ""}`}
+        >
+          <span className="nav-icon">ℹ️</span>
+          About Us
+        </Link>
+
+      </div>
+
+      {/* FOOTER */}
       <div className="sidebar-foot">
-        <div className="foot-avatar">
-          {role === "admin" ? "🛡️" : role === "manager" ? "📋" : "👤"}
-        </div>
+        <div className="foot-avatar">👤</div>
 
         <div>
-          <div className="foot-name">{u.username}</div>
-          <div className="foot-role">{role}</div>
+          <div className="foot-name">{user?.username}</div>
+          <div className="foot-role">{user?.role}</div>
         </div>
 
-        <button className="btn-logout" onClick={Auth.logout} title="Logout">
-          ⏏
+        <button
+          className="btn-logout"
+          onClick={() => {
+            Auth.logout();
+            navigate("/Login");
+          }}
+        >
+          ⎋
         </button>
       </div>
-    </div>
+
+    </aside>
   );
 }
-
-export default Sidebar;

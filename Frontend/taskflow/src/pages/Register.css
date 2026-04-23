@@ -50,7 +50,7 @@ body {
 .sidebar {
   width: var(--sidebar);
   background: var(--surface);
-  border-right: 1px solid var(--border);
+  border-right: none;
 
   display: flex;
   flex-direction: column;

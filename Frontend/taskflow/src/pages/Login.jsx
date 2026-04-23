@@ -71,7 +71,7 @@ export default function Login() {
           <div className="lc">
             <h1>
               Kelola Tim Anda.<br />
-              Selesaikan Lebih Cepat.
+              Selesaikan Lebih Cepat!
             </h1>
 
             <p>
@@ -93,10 +93,12 @@ export default function Login() {
           <h2>Login</h2>
           <p className="sub">Silakan login menggunakan akun yang diberikan admin</p>
 
+          {/* SERVER STATUS (tanpa "Server terhubung") */}
           <div className="svr">
             {serverStatus === "loading" && <span>Memeriksa server...</span>}
-            {serverStatus === "ok" && <span style={{ color: "lime" }}>Server terhubung ✓</span>}
-            {serverStatus === "err" && <span style={{ color: "red" }}>Server tidak terdeteksi</span>}
+            {serverStatus === "err" && (
+              <span style={{ color: "red" }}>Server tidak terdeteksi</span>
+            )}
           </div>
 
           {error && <div className="err show">{error}</div>}
@@ -125,16 +127,10 @@ export default function Login() {
             </div>
 
             <button className="btn" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Memproses..." : "Masuk ->"}
+              {isSubmitting ? "Memproses..." : "Masuk"}
             </button>
           </form>
 
-          <div className="hint">
-            <div>Akun seed DB:</div>
-            <div>admin / admin123</div>
-            <div>manager1 / manager123</div>
-            <div>pegawai1 / pegawai123</div>
-          </div>
         </div>
 
       </div>

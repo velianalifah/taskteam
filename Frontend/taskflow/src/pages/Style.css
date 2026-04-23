@@ -38,30 +38,26 @@ body {
   background: var(--bg);
   color: var(--text);
   height: 100%;
+  overflow-x: hidden; /* 🔥 WAJIB */
 }
 
-/* ───────── LAYOUT ───────── */
-.app {
-  display: flex;
-  min-height: 100vh;
-}
-
-/* ───────── SIDEBAR ───────── */
-.sidebar {
-  width: var(--sidebar);
+/* LAYOUT */
+.topbar {
   background: var(--surface);
-  border-right: 1px solid var(--border);
+  padding: 14px 24px;
 
   display: flex;
-  flex-direction: column;
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 100;
+  justify-content: space-between;
+  border: none !important;
 }
 
+/* Hilangkan semua border pada .topbar khusus halaman Dashboard */
+
+.main .topbar {
+  border: none !important;
+}
+
+/* LOGO */
 .sidebar-logo {
   padding: 20px 18px;
   display: flex;
@@ -78,7 +74,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
 }
 
 .logo-text {
@@ -87,34 +82,23 @@ body {
   font-size: 17px;
 }
 
+/* NAV */
 .sidebar-nav {
   flex: 1;
   padding: 14px 10px;
-  overflow-y: auto;
-}
-
-.nav-label {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 6px 8px;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 9px 10px;
+  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   color: var(--muted);
   font-size: 13px;
-  font-weight: 500;
   text-decoration: none;
-  margin-bottom: 2px;
-  transition: all 0.15s;
+  margin-bottom: 4px;
 }
 
 .nav-item:hover {
@@ -127,172 +111,83 @@ body {
   color: var(--accent2);
 }
 
-.nav-icon {
-  font-size: 15px;
-  width: 18px;
-  text-align: center;
-}
-
+/* FOOT */
 .sidebar-foot {
   padding: 12px 16px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
 }
 
 .foot-avatar {
   width: 32px;
   height: 32px;
   background: var(--surface2);
-  border: 1px solid var(--border);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
 }
 
 .foot-name {
   font-size: 13px;
-  font-weight: 500;
-  flex: 1;
 }
 
 .foot-role {
   font-size: 11px;
   color: var(--muted);
-  text-transform: capitalize;
 }
 
 .btn-logout {
+  margin-left: auto;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--muted);
-  font-size: 16px;
-  transition: color 0.2s;
 }
 
 .btn-logout:hover {
   color: var(--red);
 }
 
-/* ───────── MAIN ───────── */
+/* MAIN */
 .main {
   margin-left: var(--sidebar);
-  flex: 1;
+  width: calc(100% - var(--sidebar)); /* 🔥 INI KUNCI */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  border: none !important;
+  box-shadow: none !important;
+  overflow-x: hidden;
 }
 
+/* TOPBAR */
 .topbar {
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 13px 26px;
+  padding: 14px 24px;
+
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  border-bottom: 1px solid var(--border);
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.topbar-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 17px;
-  font-weight: 700;
+/* Hilangkan border-right pada .topbar khusus halaman Dashboard */
+.main .topbar {
+  border-right: none !important;
+  border-left: none !important;
+  border-top: none !important;
 }
 
+/* PAGE */
 .page {
-  padding: 24px 26px;
-  flex: 1;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: none; }
-}
-
-/* ───────── STAT CARDS ───────── */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 22px;
-}
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
-}
-
-.stat-label {
-  font-size: 11px;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.stat-val {
-  font-family: 'Syne', sans-serif;
-  font-size: 30px;
-  font-weight: 800;
-}
-
-.stat-sub {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-/* ───────── BADGE ───────── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-/* ROLE BADGE */
-.b-admin {
-  background: rgba(239, 68, 68, .15);
-  color: var(--red);
-}
-
-.b-manager {
-  background: rgba(168, 85, 247, .15);
-  color: var(--purple);
-}
-
-/* 🔥 UPDATED */
-.b-pegawai {
-  background: rgba(59, 130, 246, .15);
-  color: var(--accent2);
-}
-
-/* STATUS */
-.b-todo { background: rgba(100, 116, 139, .15); color: var(--muted); }
-.b-progress { background: rgba(59, 130, 246, .15); color: var(--accent2); }
-.b-done { background: rgba(34, 197, 94, .15); color: var(--green); }
-
-/* PRIORITY */
-.b-high { background: rgba(239, 68, 68, .15); color: var(--red); }
-.b-medium { background: rgba(245, 158, 11, .15); color: var(--yellow); }
-.b-low { background: rgba(34, 197, 94, .15); color: var(--green); }
-
-/* BUTTON */
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 15px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  cursor: pointer;
+  padding: 24px;
+  width: 100%;
+  max-width: 100%;
 }

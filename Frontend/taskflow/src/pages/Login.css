@@ -1,11 +1,11 @@
-,::before,*::after {
+*,*::before,*::after {
   box-sizing:border-box;
   margin:0;
   padding:0;
 }
 
 :root {
-  --bg:#0a0e1a;
+  --bg:#e5e7eb; /* 🔥 abu muda */
   --surface:#111827;
   --surface2:#1a2235;
   --border:#1f2d47;
@@ -24,45 +24,53 @@ body {
   font-family:'DM Sans',sans-serif;
   background:var(--bg);
   color:var(--text);
+
   min-height:100vh;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   overflow:hidden;
 }
 
-/* BG */
 .bg {
   position:fixed;
   inset:0;
-  background-image:
-    linear-gradient(rgba(59,130,246,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(59,130,246,.05) 1px,transparent 1px);
-  background-size:40px 40px;
+  background:#0a0e1a
 }
 
+/* GLOW DIKURANGIN */
 .glow {
   position:fixed;
   inset:0;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 40%,rgba(59,130,246,.15),transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 60%,rgba(96,165,250,.1),transparent 70%);
+    radial-gradient(ellipse 60% 50% at 20% 40%,rgba(0,0,0,.05),transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 60%,rgba(0,0,0,.03),transparent 70%);
 }
 
 /* CONTAINER */
 .wrap {
-  position:relative;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  
   z-index:1;
-  display:grid;
-  grid-template-columns:1fr 1fr;
+
   width:min(880px,95vw);
   min-height:540px;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
 
   border-radius:20px;
   overflow:hidden;
 
   backdrop-filter:blur(12px);
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  box-shadow:0 20px 60px rgba(0,0,0,.3); /* sedikit lebih soft */
+
+  margin:auto;
 }
 
 /* LEFT */
@@ -75,9 +83,14 @@ body {
 .right {
   background:rgba(17,24,39,.95);
   padding:46px 40px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+   padding-top:60px;
 }
 
-/* 🔥 BRAND */
+/* BRAND */
 .brand{
   display:flex;
   align-items:center;
@@ -102,24 +115,26 @@ body {
   box-shadow:0 8px 20px rgba(59,130,246,.4);
 }
 
-.logo-text{
-  font-family:'Syne',sans-serif;
-  font-size:20px;
-  font-weight:800;
+.logo-text {
+  font-family: 'DM Sans', sans-serif; /* pakai font yg udah kamu pake */
+  font-size:30px; 
+  font-weight:600 !important; 
 }
 
 /* TEXT */
 h1 {
   font-size:30px;
   line-height:1.2;
-  font-weight:800;
+  font-weight: 690;
   margin-bottom:12px;
+  color:#ffffff;
 }
 
 h2 {
   font-size:30px;
   font-weight:700;
   margin-bottom:6px;
+  color:#ffffff;
 }
 
 .sub {
@@ -131,23 +146,25 @@ h2 {
 .lc p {
   font-size:15px;
   color:var(--muted);
-  margin-bottom:12px;
+  margin-bottom:25px;
 }
 
 /* FEATURES */
 .feats{
-  margin-top:10px;
+  margin-top:25px;
+  text-align:left;
 }
 
 .feat {
-  font-size:14px;
-  color:var(--muted);
+  font-size:13px;
+  color:#64748b;
   margin-bottom:6px;
 }
 
 /* FORM */
 .fg {
   margin-bottom:16px;
+  text-align:left;
 }
 
 .fg label {
@@ -208,20 +225,11 @@ h2 {
   color:var(--muted);
 }
 
-.dot {
-  width:8px;
-  height:8px;
-  border-radius:50%;
-}
-
-.dot-ok { background:var(--green); }
-.dot-err { background:var(--red); }
-
 /* FOOT */
 .lfoot {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:20px;
+  font-size:13px;
+  color:#64748b;
+  margin-top: 45px;
 }
 
 .hint {
