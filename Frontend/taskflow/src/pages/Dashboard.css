@@ -13,7 +13,7 @@ html, body {
 
 /* MAIN */
 .main {
-  margin-left: 240px; /* sidebar */
+  margin-left: 240px;
   width: calc(100% - 240px);
   min-height: 100vh;
   display: flex;
@@ -25,7 +25,6 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding: 14px 24px;
   background: var(--surface);
 }
@@ -54,12 +53,6 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.emoji {
-  font-size: 34px;
 }
 
 /* BOARD */
@@ -73,20 +66,14 @@ html, body {
 .col-mini {
   background: var(--surface);
   border-radius: 14px;
-  border: none !important;
-  box-shadow: none !important;
 }
 
 .col-head {
   padding: 12px;
-  border: none !important;
-  box-shadow: none !important;
 }
 
 .col-body {
   padding: 10px;
-  border: none !important;
-  box-shadow: none !important;
 }
 
 .task-mini {
@@ -94,48 +81,89 @@ html, body {
   margin-bottom: 6px;
   border-radius: 8px;
   background: rgba(255,255,255,.05);
-  border: none !important;
-  box-shadow: none !important;
 }
 
 /* ADMIN */
 .admin-grid {
   margin-top: 20px;
-  border: none !important;
-  box-shadow: none !important;
 }
 
 /* CARD */
 .card {
   background: var(--surface);
   border-radius: 16px;
-  border: none !important;
-  box-shadow: none !important;
 }
 
 .card-head {
   padding: 14px;
-  border: none !important;
-  box-shadow: none !important;
+  font-weight: 600;
 }
 
 .card-body {
   padding: 16px;
-  border: none !important;
-  box-shadow: none !important;
 }
 
-/* ACTIVITY */
+/* ================= ACTIVITY (UPGRADE) ================= */
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .activity-item {
-  padding: 10px;
-  border: none !important;
-  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px;
+  border-radius: 10px;
+
+  transition: 0.2s;
 }
 
+/* hover effect */
+.activity-item:hover {
+  background: var(--surface2);
+}
+
+/* icon */
+.activity-icon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* warna icon */
+.activity-success {
+  background: rgba(0,255,150,0.15);
+  color: #00ffa6;
+}
+
+.activity-info {
+  background: rgba(0,150,255,0.15);
+  color: #4da6ff;
+}
+
+/* text */
+.activity-text {
+  font-size: 13px;
+}
+
+/* divider halus */
+.activity-item:not(:last-child) {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* empty state */
 .activity-empty {
   text-align: center;
   padding: 40px;
   color: var(--muted);
-  border: none !important;
-  box-shadow: none !important;
 }

@@ -7,6 +7,7 @@ export default function User() {
 
   const user = JSON.parse(localStorage.getItem("tt_user"));
 
+  // 🔐 PROTECT HALAMAN
   if (!user) {
     window.location.href = "/";
     return null;
@@ -72,7 +73,12 @@ export default function User() {
 
     setFormOpen(false);
     setEditId(null);
-    setForm({ username:"", password:"", role:"pegawai", divisi:"IT" });
+    setForm({
+      username: "",
+      password: "",
+      role: "pegawai",
+      divisi: "IT"
+    });
 
     loadAll();
   };
@@ -96,7 +102,6 @@ export default function User() {
 
   return (
     <div className="app">
-
       <Sidebar active="users" />
 
       <main className="main">
@@ -109,7 +114,7 @@ export default function User() {
         {/* PAGE */}
         <div className="page">
 
-          {/* HEADER FLEX */}
+          {/* HEADER */}
           <div className="page-head">
             <h2>👥 Manajemen User</h2>
 

@@ -1,5 +1,5 @@
 const express = require("express");
-const cors    = require("cors");
+const cors = require("cors");
 require("dotenv").config();
 const db = require("./config/db");
 
@@ -9,13 +9,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// TEST KONEKSI DB
 db.getConnection((err, connection) => {
     if (err) return console.error("DB gagal:", err.message);
     console.log("DB connected");
     connection.release();
 });
 
-// ── ROOT ───────────────────────────────
+// ROOT
 app.get("/", (req, res) => {
     res.json({ message: "API jalan 🔥" });
 });
@@ -23,7 +24,7 @@ app.get("/", (req, res) => {
 
 // ═════════ AUTH ═════════
 
-//  REGISTER (ADMIN ONLY + VALIDASI)
+// REGISTER
 app.post("/register", (req, res) => {
     let { username, password, role, divisi, created_by } = req.body;
 
@@ -31,13 +32,17 @@ app.post("/register", (req, res) => {
         return res.status(400).json({ message: "Username & password wajib" });
     }
 
-    // VALIDASI ROLE
     const validRole = ["admin", "manager", "pegawai"];
     role = validRole.includes(role) ? role : "pegawai";
 
-    // VALIDASI DIVISI
     const validDivisi = ["IT", "Marketing", "Keuangan"];
-    divisi = validDivisi.includes(divisi) ? divisi : null;
+
+    // 🔥 FIX: hanya pegawai boleh punya divisi
+    if (role !== "pegawai") {
+        divisi = null;
+    } else {
+        divisi = validDivisi.includes(divisi) ? divisi : null;
+    }
 
     db.query(
         "SELECT role FROM users WHERE id=?",
@@ -67,8 +72,7 @@ app.post("/register", (req, res) => {
     );
 });
 
-
-// LOGIN 
+// LOGIN
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
@@ -100,8 +104,7 @@ app.get("/users", (req, res) => {
     );
 });
 
-
-// UPDATE USER 
+// UPDATE USER
 app.put("/users/:id", (req, res) => {
     let { username, password, role, divisi } = req.body;
 
@@ -109,22 +112,28 @@ app.put("/users/:id", (req, res) => {
     role = validRole.includes(role) ? role : "pegawai";
 
     const validDivisi = ["IT", "Marketing", "Keuangan"];
-    divisi = validDivisi.includes(divisi) ? divisi : null;
+
+    // 🔥 FIX: hanya pegawai boleh punya divisi
+    if (role !== "pegawai") {
+        divisi = null;
+    } else {
+        divisi = validDivisi.includes(divisi) ? divisi : null;
+    }
 
     db.query(
         "UPDATE users SET username=?, password=?, role=?, divisi=? WHERE id=?",
         [username, password, role, divisi, req.params.id],
-        e => {
-            if (e) return res.status(500).json({ message: "err" });
+        err => {
+            if (err) return res.status(500).json({ message: "err" });
             res.json({ message: "updated" });
         }
     );
 });
 
-
 // DELETE USER
 app.delete("/users/:id", (req, res) => {
-    db.query("DELETE FROM users WHERE id=?", [req.params.id], () => {
+    db.query("DELETE FROM users WHERE id=?", [req.params.id], err => {
+        if (err) return res.status(500).json({ message: "err" });
         res.json({ message: "deleted" });
     });
 });
@@ -132,7 +141,7 @@ app.delete("/users/:id", (req, res) => {
 
 // ═════════ TASKS ═════════
 
-// GET TASKS 
+// GET TASKS
 app.get("/tasks", (req, res) => {
     db.query(`
         SELECT t.*, u.username as assignee_name, u.divisi
@@ -144,8 +153,7 @@ app.get("/tasks", (req, res) => {
     });
 });
 
-
-// CREATE TASK 
+// CREATE TASK
 app.post("/tasks", (req, res) => {
     let { title, description, assignee_id, deadline, status, priority, divisi } = req.body;
 
@@ -155,10 +163,12 @@ app.post("/tasks", (req, res) => {
     db.query(
         "INSERT INTO tasks (title,description,assignee_id,deadline,status,priority,divisi) VALUES (?,?,?,?,?,?,?)",
         [title, description, assignee_id, deadline, status, priority, divisi],
-        () => res.json({ message: "created" })
+        err => {
+            if (err) return res.status(500).json({ message: "gagal create task" });
+            res.json({ message: "created" });
+        }
     );
 });
-
 
 // UPDATE TASK
 app.put("/tasks/:id", (req, res) => {
@@ -170,19 +180,22 @@ app.put("/tasks/:id", (req, res) => {
     db.query(
         "UPDATE tasks SET title=?,description=?,assignee_id=?,deadline=?,status=?,priority=?,divisi=? WHERE id=?",
         [title, description, assignee_id, deadline, status, priority, divisi, req.params.id],
-        () => res.json({ message: "updated" })
+        err => {
+            if (err) return res.status(500).json({ message: "gagal update" });
+            res.json({ message: "updated" });
+        }
     );
 });
 
-
 // DELETE TASK
 app.delete("/tasks/:id", (req, res) => {
-    db.query("DELETE FROM tasks WHERE id=?", [req.params.id], () => {
+    db.query("DELETE FROM tasks WHERE id=?", [req.params.id], err => {
+        if (err) return res.status(500).json({ message: "gagal delete" });
         res.json({ message: "deleted" });
     });
 });
 
 
-// ── START SERVER ───────────────────────
+// START SERVER
 const port = Number(process.env.PORT || 3000);
 app.listen(port, () => console.log(`Server http://localhost:${port}`));

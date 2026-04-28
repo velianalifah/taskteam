@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import "./Style.css";
 import "./About.css";
 
+import Sidebar from "../components/Sidebar";
+
 export default function About() {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("tt_user"));
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("tt_user"));
-
     if (!user) {
       navigate("/login");
     }
@@ -16,27 +17,13 @@ export default function About() {
 
   return (
     <div className="app">
-      
-      {/* SIDEBAR */}
-      <div className="sidebar">
-        <div className="sidebar-logo">
-          <div className="logo-icon">✦</div>
-          <span className="logo-text">TaskTeam</span>
-        </div>
 
-        <nav className="sidebar-nav">
-          <div className="nav-label">Menu</div>
-
-          <a className="nav-item" href="/dashboard">📊 Dashboard</a>
-          <a className="nav-item" href="/tasks">✅ Manajemen Tugas</a>
-          <a className="nav-item" href="/users">👥 Manajemen User</a>
-          <a className="nav-item active" href="/about">ℹ️ About</a>
-        </nav>
-      </div>
+      {/* ✅ PAKAI SIDEBAR COMPONENT */}
+      <Sidebar active="about" />
 
       {/* MAIN */}
       <main className="main">
-        
+
         {/* TOPBAR */}
         <div className="topbar">
           <span className="topbar-title">ℹ️ About Us</span>
@@ -58,6 +45,7 @@ export default function About() {
           <div className="section-title">⚡ Fitur Aplikasi</div>
 
           <div className="feat-grid">
+
             <div className="feat-card">
               <div className="fi">🔐</div>
               <h4>Autentikasi</h4>
@@ -70,17 +58,22 @@ export default function About() {
               <p>Ringkasan tugas, progress, dan deadline terdekat secara real-time.</p>
             </div>
 
-            <div className="feat-card">
-              <div className="fi">✅</div>
-              <h4>Manajemen Tugas</h4>
-              <p>CRUD tugas lengkap dengan status, prioritas, dan assignee.</p>
-            </div>
+            {/* 🔥 HANYA ADMIN & MANAGER */}
+            {user?.role !== "pegawai" && (
+              <>
+                <div className="feat-card">
+                  <div className="fi">✅</div>
+                  <h4>Manajemen Tugas</h4>
+                  <p>CRUD tugas lengkap dengan status, prioritas, dan assignee.</p>
+                </div>
 
-            <div className="feat-card">
-              <div className="fi">👥</div>
-              <h4>Manajemen User</h4>
-              <p>Admin dapat mengelola seluruh akun pengguna di sistem.</p>
-            </div>
+                <div className="feat-card">
+                  <div className="fi">👥</div>
+                  <h4>Manajemen User</h4>
+                  <p>Admin dapat mengelola seluruh akun pengguna di sistem.</p>
+                </div>
+              </>
+            )}
 
             <div className="feat-card">
               <div className="fi">🔌</div>
@@ -93,6 +86,7 @@ export default function About() {
               <h4>Role-Based Access</h4>
               <p>Setiap role punya akses berbeda terhadap fitur aplikasi.</p>
             </div>
+
           </div>
 
           {/* TEAM */}
